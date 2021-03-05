@@ -96,6 +96,15 @@ public class RegisterFrame extends JFrame {
         add(inputPanel, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
 
+        registerButton.setEnabled(false);
+
+        nameField.addKeyListener(getFieldCheckAdapter());
+        userIdField.addKeyListener(getFieldCheckAdapter());
+        passwordField.addKeyListener(getFieldCheckAdapter());
+        passwordCheckField.addKeyListener(getFieldCheckAdapter());
+        phoneField.addKeyListener(getFieldCheckAdapter());
+        birthDayField.addKeyListener(getFieldCheckAdapter());
+
         duplicateCheckButton.addActionListener((action) -> isDuplicateUserId());
         registerButton.addActionListener((action) -> register());
         cancelButton.addActionListener((action) -> cancel());
@@ -209,6 +218,22 @@ public class RegisterFrame extends JFrame {
         } catch (ParseException e) {
             return false;
         }
+    }
+
+    public KeyAdapter getFieldCheckAdapter() {
+        return new KeyAdapter() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                boolean isEnable = !nameField.getText().isEmpty() &&
+                        !userIdField.getText().isEmpty() &&
+                        !passwordField.getText().isEmpty() &&
+                        !passwordCheckField.getText().isEmpty() &&
+                        !phoneField.getText().isEmpty() &&
+                        !birthDayField.getText().isEmpty();
+
+                registerButton.setEnabled(isEnable);
+            }
+        };
     }
 
 }
