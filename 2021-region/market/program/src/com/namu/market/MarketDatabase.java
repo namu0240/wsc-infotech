@@ -1,7 +1,6 @@
 package com.namu.market;
 
 import com.namu.market.entity.User;
-import javafx.util.Pair;
 
 import java.sql.*;
 
@@ -12,6 +11,14 @@ public class MarketDatabase {
     public static void connect() throws Exception {
         Class.forName("com.mysql.cj.jdbc.Driver");
         connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computer?serverTimezone=UTC&allowLoadLocalInfile=true", "root", "1234");
+    }
+
+    public static boolean checkUserIdDuplicate(String userId) {
+        return false;
+    }
+
+    public static void register(User user) {
+
     }
 
     public static User login(String userId, String password) {

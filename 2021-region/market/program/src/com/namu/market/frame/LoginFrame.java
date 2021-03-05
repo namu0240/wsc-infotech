@@ -57,7 +57,8 @@ public class LoginFrame extends JFrame {
     }
 
     public void register() {
-
+        this.setVisible(false);
+        new RegisterFrame().setVisible(true);
     }
 
     public void login() {
