@@ -45,24 +45,24 @@ public class MarketDatabase {
     public static User login(String userId, String password) {
         try {
             PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM market.user where lower(u_id) = ? and lower(u_pw) = ?;");
-            preparedStatement.setString(1, userId);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(1, userId.toLowerCase());
+            preparedStatement.setString(2, password.toLowerCase());
 
             ResultSet resultSet = preparedStatement.executeQuery();
-
+            
             if(!resultSet.next()) {
             	return null;
             }
             
             return new User(
-                    resultSet.getInt(0),
-                    resultSet.getString(1),
+                    resultSet.getInt(1),
                     resultSet.getString(2),
                     resultSet.getString(3),
                     resultSet.getString(4),
-                    resultSet.getDate(5),
-                    resultSet.getInt(6),
-                    resultSet.getInt(7)
+                    resultSet.getString(5),
+                    resultSet.getDate(6),
+                    resultSet.getInt(7),
+                    resultSet.getInt(8)
             );
 
         } catch (SQLException e) {
