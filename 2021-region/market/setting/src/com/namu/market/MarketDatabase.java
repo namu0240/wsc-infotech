@@ -9,7 +9,7 @@ public class MarketDatabase {
 	
 	public static void connect() throws Exception {
 		Class.forName("com.mysql.cj.jdbc.Driver");
-		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/computer?serverTimezone=UTC&allowLoadLocalInfile=true","root","1234");
+		connection = DriverManager.getConnection("jdbc:mysql://localhost:3306?serverTimezone=UTC&allowLoadLocalInfile=true","root","1234");
 	}
 	
 	public static void initialize() throws Exception {
@@ -22,11 +22,9 @@ public class MarketDatabase {
 		connection.prepareStatement("CREATE SCHEMA IF NOT EXISTS `market` DEFAULT CHARACTER SET utf8 ;").executeUpdate();
 		
 		// user
-		connection.prepareStatement("drop user 'user'@'localhost';").executeUpdate();
-		connection.prepareStatement("flush privileges;").executeUpdate();
-		connection.prepareStatement("CREATE USER 'user'@'localhost';").executeUpdate();
+		connection.prepareStatement("DROP USER IF EXISTS user@localhost;").executeUpdate();
+		connection.prepareStatement("CREATE USER user@localhost;").executeUpdate();
 		connection.prepareStatement("GRANT select, delete, update, insert ON market.* TO 'user'@'localhost';").executeUpdate();
-		connection.prepareStatement("flush privileges;").executeUpdate();
 		
 		// select database
 		connection.prepareStatement("USE `market`;").executeUpdate();
@@ -120,7 +118,7 @@ public class MarketDatabase {
 		// 로드되는 순서가 섞이지 않도록 주의! FK 가 설정되어 있는 테이블은 후 순위로 미뤄서 작업을 해야함
 		String[] tableNames = new String[] { "user","category","product","coupon","purchase","attendance" };
 		for( String tableName : tableNames) {
-			connection.prepareStatement("LOAD DATA LOCAL INFILE './지급자료/" + tableName + ".txt' INTO TABLE " + tableName + " COLUMNS TERMINATED BY '\t';").executeUpdate();
+			connection.prepareStatement("LOAD DATA LOCAL INFILE './지급자료/" + tableName + ".txt' INTO TABLE " + tableName + " COLUMNS TERMINATED BY '\t' LINES TERMINATED BY '\n';").executeUpdate();
 			System.out.println("LOAD DATA LOCAL INFILE './지급자료/" + tableName + ".txt' INTO TABLE " + tableName + " COLUMNS TERMINATED BY '\\t';");
 		}
 		
