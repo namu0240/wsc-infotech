@@ -2,6 +2,7 @@ package com.namu.market.frame;
 
 import com.namu.market.Common;
 import com.namu.market.MarketDatabase;
+import com.namu.market.entity.User;
 
 import javax.swing.*;
 import java.awt.*;
@@ -174,6 +175,23 @@ public class RegisterFrame extends JFrame {
             Common.showError("생년월일을 확인해주세요.");
             return;
         }
+        
+        try {
+			MarketDatabase.register(
+					new User(
+							0, 
+							userIdField.getText(), 
+							passwordField.getText(), 
+							nameField.getText(), 
+							phoneField.getText(), 
+							new java.sql.Date(new SimpleDateFormat("yyyy-MM-dd").parse(birthDayField.getText()).getTime()), 
+							0, 
+							0
+						)
+				);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 
         Common.showInfo("회원가입이 완료되었습니다.");
         this.setVisible(false);
